@@ -6,6 +6,7 @@ class TaskList(object):
            runtime for searching."""
         self.task_list = []
         self.task_indicies = {}
+
     def __contains__(self,key):
         """Overrides contains method for TaskList, checks if task already exists.
 
@@ -21,7 +22,8 @@ class TaskList(object):
 
         """
         return key in self.task_indicies
-    def addTask(self, task_name):
+
+    def add_task(self, task_name):
         """ Adds new task to the list
 
         Parameters
@@ -42,6 +44,30 @@ class TaskList(object):
             self.task_list.append(Task(task_name))
             return False
 
+    def get_task(self, task_name):
+        """Short summary.
+
+        Parameters
+        ----------
+        task_name : str
+            The name of the desired Task object.
+
+        Returns
+        -------
+        Task
+            The Task object with whose name attribute is the same as 'task_name'
+
+        Exceptions
+        ----------
+        'task [task_name] does not exist'
+            attempted to get a task not contained in tasklist
+
+        """
+        if task_name not in self:
+            raise Exception("Task '{}' does not exist.")
+        else:
+            return self.task_list[self.task_indicies[task_name]]
+
     def __str__(self):
         """Overrides default toString method to print details about all tasks in TaskList.
 
@@ -55,10 +81,13 @@ class TaskList(object):
             returns details of all tasks in task list (see __str__ documentation for Task).
 
         """
-        retval = ""
+
+        retval = "You have {} tasks\n".format(len(self.task_list))
+
         for task in self.task_list:
             retval += str(task)
         return retval
+
 
 class Task(object):
 
@@ -77,11 +106,11 @@ class Task(object):
             Does not return a value
 
         """
-        self._name = name
-        self._completed = False
+        self.name = name
+        self.completed = False
 
     def __str__(self):
-        """Overrides toString for Task object to print out relavent info about task.
+        """returns a formatted value of Task object.
 
         Parameters
         ----------
@@ -97,8 +126,11 @@ class Task(object):
             "[ ] Visit all 6 continents"
 
         """
-        return (lambda: '[ ]  {}'.format(self._name), '[X] - {}'.format(self._name))[self._completed]()
+        if self.completed:
+            return "[X] - {} \n".format(self.name)
+        else:
+            return "[ ] - {}\n".format(self.name)
 
-    def markComplete(self):
+    def mark_complete(self):
         """ Marks Task as complete"""
-        self._completed = True
+        self.completed = True
