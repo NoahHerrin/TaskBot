@@ -1,6 +1,10 @@
+# Project: Taskbot
+# Author: Noah Herrin
+# Purpose: Data structure responsible for storing tasks
+
+
 class TaskList(object):
 
-    # initialize task manager with a list to store tasks
     def __init__(self):
         """Initialize TaskList by creating a list to store the task objects and a dictionary to improve
            runtime for searching."""
