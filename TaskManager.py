@@ -8,8 +8,8 @@ class TaskList(object):
     def __init__(self):
         """Initialize TaskList by creating a list to store the task objects and a dictionary to improve
            runtime for searching."""
-        self.task_list = []
-        self.task_indicies = {}
+        self.__task_list = []
+        self.__task_indicies = {}
 
     def __contains__(self,key):
         """Overrides contains method for TaskList, checks if task already exists.
@@ -44,8 +44,8 @@ class TaskList(object):
         if task_name in self:
             return True
         else:
-            self.task_indicies[task_name] = len(self.task_list)
-            self.task_list.append(Task(task_name))
+            self.__task_indicies[task_name] = len(self.__task_list)
+            self.__task_list.append(Task(task_name))
             return False
 
     def get_task(self, task_name):
@@ -70,7 +70,7 @@ class TaskList(object):
         if task_name not in self:
             raise Exception("Task '{}' does not exist.")
         else:
-            return self.task_list[self.task_indicies[task_name]]
+            return self.__task_list[self.__task_indicies[task_name]]
 
     def __str__(self):
         """Overrides default toString method to print details about all tasks in TaskList.
@@ -86,15 +86,20 @@ class TaskList(object):
 
         """
 
-        retval = "You have {} tasks\n".format(len(self.task_list))
+        retval = "You have {} tasks\n".format(len(self.__task_list))
 
-        for task in self.task_list:
+        for task in self.__task_list:
             retval += str(task)
         return retval
 
 
 class Task(object):
-
+    # TO DO LIST
+    #
+    # [ ] save list to a given destination, mongodb or local file
+    # [ ] make functions editiable, change task name
+    # [ ] add notes to tasks
+    # [ ] add the option to open up links in notes for task
 
     def __init__(self, name):
         """Initialize new Task object.
@@ -110,8 +115,8 @@ class Task(object):
             Does not return a value
 
         """
-        self.name = name
-        self.completed = False
+        self.__name = name
+        self.__completed = False
 
     def __str__(self):
         """returns a formatted value of Task object.
@@ -130,11 +135,11 @@ class Task(object):
             "[ ] Visit all 6 continents"
 
         """
-        if self.completed:
-            return "[X] - {} \n".format(self.name)
+        if self.__completed:
+            return "[X] - {} \n".format(self.__name)
         else:
-            return "[ ] - {}\n".format(self.name)
+            return "[ ] - {}\n".format(self.__name)
 
     def mark_complete(self):
         """ Marks Task as complete"""
-        self.completed = True
+        self.__completed = True
