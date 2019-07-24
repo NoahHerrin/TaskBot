@@ -1,0 +1,3 @@
+class,True
+work,True
+go to gym,True

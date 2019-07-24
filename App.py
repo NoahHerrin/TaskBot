@@ -5,32 +5,59 @@ import sys
 Commands = {}
 taskList = None
 isRunning = True
+OUTPUTFNAME = 'taskdata.txt'
 
+# an action function for the 'add task' command
 def add_task(command, synonym):
         global taskList
+        # split keywords from command params
         taskname = re.split(r'{}'.format(synonym),command)[1].strip()
         if taskname is not "":
                 taskList.add_task(taskname)
                 return True
         else:
                 return False
+
+# an action function for the 'display task' command
 def display_task(command,synonym):
         print(taskList)
         return True
+
+# an action function for the 'quit' command
 def quit(command, synonym):
         global isRunning
         isRunning = False
+        save_to_file()
         return True
+
 def mark_complete(command, synonym):
         taskname = re.split(r'{}'.format(synonym),command)[1].strip()
         tl=  taskList.get_tasklist()
-        # loop through tasks until correct one is found
+        # search for taskname
         for t in tl:
                 if t.get_name().lower() == taskname.lower().strip():
+                        # task was found, mark as complete
                         t.mark_complete()
                         return True
+        # task specified does not exist
         return False
 
+def save_to_file():
+        file = open(OUTPUTFNAME, "w")
+        tasklist = taskList.get_tasklist()
+        for task in tasklist:
+                file.write("{},{}\n".format(task.get_name(), task.is_complete()))
+        file.close()
+def read_from_file():
+        file = open(OUTPUTFNAME, "r")
+        for line in file:
+                line = line.rstrip().split(",")
+                taskList.add_task(line[0])
+
+                if line[1].lower() == "true":
+                        mark_complete("mark complete {}".format(line[0]), 'mark complete')
+                
+                
 
 # initialize each command with it's own synoynms, and callback function
 def initializeCommands():
@@ -78,4 +105,5 @@ def inputLoop():
 if __name__ == "__main__":
         initializeCommands()
         taskList = TaskList()
+        read_from_file()
         inputLoop()

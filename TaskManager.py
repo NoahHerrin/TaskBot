@@ -95,7 +95,8 @@ class Task(object):
 
     def get_name(self):
         return self.__name
-        
+    def is_complete(self):
+        return self.__completed
     def __str__(self):
         """returns a formatted value of Task object.
 
