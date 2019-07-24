@@ -12,42 +12,17 @@ class TaskList(object):
         self.__task_indicies = {}
 
     def __contains__(self,key):
-        """Overrides contains method for TaskList, checks if task already exists.
-
-        Parameters
-        ----------
-        key : str
-            The name of a Task that may or may not exist.
-
-        Returns
-        -------
-        Boolean
-            Returns True if TaskList contains task if not it will return False.
-
-        """
-        return key in self.task_indicies
+        return key in self.__task_indicies
 
     def add_task(self, task_name):
-        """ Adds new task to the list
-
-        Parameters
-        ----------
-        task_name : str
-            The name that will be displayed whenever program references this task.
-
-        Returns
-        -------
-        Boolean
-            will return True if task list already contains task and False if it does not.
-
-        """
         if task_name in self:
             return True
         else:
             self.__task_indicies[task_name] = len(self.__task_list)
             self.__task_list.append(Task(task_name))
             return False
-
+    def get_tasklist(self):
+        return self.__task_list
     def get_task(self, task_name):
         """Short summary.
 
@@ -68,7 +43,7 @@ class TaskList(object):
 
         """
         if task_name not in self:
-            raise Exception("Task '{}' does not exist.")
+            return False
         else:
             return self.__task_list[self.__task_indicies[task_name]]
 
@@ -90,7 +65,7 @@ class TaskList(object):
 
         for task in self.__task_list:
             retval += str(task)
-        return retval
+        return retval.rstrip()
 
 
 class Task(object):
@@ -118,6 +93,9 @@ class Task(object):
         self.__name = name
         self.__completed = False
 
+    def get_name(self):
+        return self.__name
+        
     def __str__(self):
         """returns a formatted value of Task object.
 
